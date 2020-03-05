@@ -61,6 +61,17 @@ public class ClassDiagram {
         }
     }
 
+
+    /**
+     * For a given class cl, if it has a super-class (a parent-class)
+     * add an inheritance relation from cl to the parent-class. Use the
+     * 'inheritance' map to store this.
+     * @param cl
+     */
+    private void extractInheritanceRelationships(Class cl) {
+        inheritance.put(getClassName(cl), getClassName(cl.getSuperclass()));
+    }
+
     /**
      * For a class cl, identify the fields that are declared within it.
      * Store the fields as a set of String objects, where a String refers
@@ -70,17 +81,15 @@ public class ClassDiagram {
      * @param cl
      */
     private void extractAssociationRelationships(Class cl) {
-        //INSERT CODE HERE
-    }
-
-    /**
-     * For a given class cl, if it has a super-class (a parent-class)
-     * add an inheritance relation from cl to the parent-class. Use the
-     * 'inheritance' map to store this.
-     * @param cl
-     */
-    private void extractInheritanceRelationships(Class cl) {
-        //INSERT CODE HERE
+        Set<String> fields = new HashSet<String>();
+        for(Field fld : cl.getDeclaredFields()){
+            //Do not want to include associations to primitive types such as ints or doubles.
+            if(fld.getType() instanceof Class) {
+                String toAdd =  getClassName(fld.getType());
+                fields.add(toAdd);
+            }
+        }
+        associations.put(getClassName(cl),fields);
     }
 
     protected boolean includeClass(Class cl){
