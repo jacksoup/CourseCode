@@ -41,7 +41,7 @@ public class CallGraph {
         List<ClassNode> classes = acr.processDirectory(dir,"");
 
         for(ClassNode cn : classes){
-            classNodes.put(cn.signature,cn);
+            classNodes.put(cn.name,cn);
         }
 
         subclasses = new HashMap<ClassNode, Set<ClassNode>>();
@@ -72,7 +72,23 @@ public class CallGraph {
      * @param classes
      */
     private void buildInheritanceTrees(List<ClassNode> classes) {
-        // INSERT CODE HERE.
+        for(ClassNode cn : classes){
+            String superClass = cn.superName;
+            if(!classNodes.containsKey(superClass))
+                addSubClass(classNodes.get(cn.superName),cn);
+        }
+    }
+
+    private void addSubClass(ClassNode superClass, ClassNode name) {
+        if(subclasses.containsKey(superClass)){
+            Collection<ClassNode> subClasses = subclasses.get(superClass);
+            subClasses.add(name);
+        }
+        else{
+            Set<ClassNode> subClasses = new HashSet<ClassNode>();
+            subClasses.add(name);
+            subclasses.put(superClass,subClasses);
+        }
     }
 
 
@@ -110,13 +126,51 @@ public class CallGraph {
      * @return
      */
     private Collection<MethodNode> getAllCandidates(Signature target, ClassNode targetClass) {
-        //INSERT CODE HERE.
+        Collection<MethodNode> targets = new HashSet<MethodNode>();
+        MethodNode targetMethod = findMethod(targetClass,target);
+        if(targetMethod!=null)
+            targets.add(targetMethod);
+        LinkedList<ClassNode> subs = new LinkedList<>();
+        if(subclasses.containsKey(targetClass))
+            subs.addAll(subclasses.get(targetClass));
+        while(!subs.isEmpty()) {
+            ClassNode subClass = subs.poll();
+            MethodNode overridingMethod = findMethod(subClass,target);
+            if(overridingMethod!=null){
+                targets.add(overridingMethod);
+            }
+            if(subclasses.containsKey(subClass))
+                subs.addAll(subclasses.get(subClass));
+        }
+        return targets;
+    }
+
+    private MethodNode findMethod(ClassNode targetClass, Signature target) {
+        for(MethodNode mn : targetClass.methods){
+            if(mn.name.equals(target.getMethod()) && mn.desc.equals(target.getSignature()))
+                return mn;
+        }
         return null;
     }
 
 
+    /**
+     * To create the string for GraphViz we just use the JGraphT toString() method for the call graph.
+     * To remove redundant nodes (i.e. methods that are not the target or source of a call), we copy the graph
+     * in such a way that such nodes are avoided.
+     */
     public String toString(){
-        return callGraph.toString();
+        Graph<Signature> printable = new Graph<Signature>();
+        for(Signature sig : callGraph.getNodes()){
+            if((!callGraph.getSuccessors(sig).isEmpty() && !callGraph.getPredecessors(sig).isEmpty()))
+                printable.addNode(sig);
+        }
+        for(Signature sig : printable.getNodes()){
+            for(Signature to : callGraph.getSuccessors(sig)){
+                printable.addEdge(sig,to);
+            }
+        }
+        return printable.toString();
     }
 
 

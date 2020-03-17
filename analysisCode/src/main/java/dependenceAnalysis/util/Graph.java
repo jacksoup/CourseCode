@@ -97,12 +97,12 @@ public class Graph<T> {
 	 * @return
 	 */
 	public String toString(){
-		String dotString = "digraph cfg{\n";
+		String dotString = "digraph gr{\n";
 		for (T node : getNodes()) {
 			String label = node.toString();
 			label = label.replaceAll("[^a-zA-Z0-9]","_");
 			if(getSuccessors(node).isEmpty()){
-				dotString+="\""+label+"\n";
+				dotString+="\""+label+"\"\n";
 			}
 			else for (T succ: getSuccessors(node)) {
 				String succLabel = succ.toString();
