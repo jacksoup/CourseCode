@@ -69,7 +69,9 @@ public class ClassDiagram {
      * @param cl
      */
     private void extractInheritanceRelationships(Class cl) {
-        inheritance.put(getClassName(cl), getClassName(cl.getSuperclass()));
+        if (!cl.isInterface()) {
+            inheritance.put(getClassName(cl), getClassName(cl.getSuperclass()));
+        }
     }
 
     /**
