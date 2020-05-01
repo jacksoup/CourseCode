@@ -178,4 +178,44 @@ public class CallGraph {
         return callGraph;
     }
 
+    public int incomingCalls(ClassNode cn, MethodNode mn){
+        Signature sig = new Signature(cn.name,mn.name,mn.desc);
+        int numIncoming = callGraph.getPredecessors(sig).size();
+        return numIncoming;
+    }
+
+    public int outgoingCalls(ClassNode cn, MethodNode mn){
+        Signature sig = new Signature(cn.name,mn.name,mn.desc);
+        int numOutgoing = callGraph.getSuccessors(sig).size();
+        return numOutgoing;
+    }
+
+    public Collection<ClassNode> getPredecessorsForClass(ClassNode cn){
+        Collection<ClassNode> retSet = new HashSet<>();
+        for(MethodNode mn : cn.methods){
+            Signature sig = new Signature(cn.name,mn.name,mn.desc);
+            if(!callGraph.getNodes().contains(sig))
+                continue;
+            for(Signature pred : callGraph.getPredecessors(sig)){
+                ClassNode owner = classNodes.get(pred.getOwner());
+                retSet.add(owner);
+            }
+        }
+        return retSet;
+    }
+
+    public Collection<ClassNode> getSuccessorsForClass(ClassNode cn){
+        Collection<ClassNode> retSet = new HashSet<>();
+        for(MethodNode mn : cn.methods){
+            Signature sig = new Signature(cn.name,mn.name,mn.desc);
+            if(!callGraph.getNodes().contains(sig))
+                continue;
+            for(Signature succ : callGraph.getSuccessors(sig)){
+                ClassNode owner = classNodes.get(succ.getOwner());
+                retSet.add(owner);
+            }
+        }
+        return retSet;
+    }
+
 }
