@@ -16,6 +16,7 @@ public class TestFastjson {
         hobies.add("reading book");
         hobies.add("watching films");
 
+
         bean.setHobies(hobies);
         System.out.println(JSONObject.toJSONString(bean));
 //        Bean bean2 = JSONObject.parseObject(JSONObject.toJSONString(bean), Bean.class);
