@@ -9,51 +9,51 @@
     <version>1.0-SNAPSHOT</version>
 
     <build>
-    <plugins>
-        <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
-        </configuration>
-        </plugin>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
 
-        <!-- Included to demonstrate the Fat-Jar construction -->
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <version>3.1.1</version>
+            <!-- Included to demonstrate the Fat-Jar construction -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.1</version>
 
-            <configuration>
-                <descriptorRefs>
-                    <descriptorRef>jar-with-dependencies</descriptorRef>
-                </descriptorRefs>
-                <archive>
-                    <index>true</index>
-                    <manifest>
-                        <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                        <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                    </manifest>
-                    <manifestEntries>
-                        <Premain-Class>dynamicAnalysis.agent.LogMain</Premain-Class>
-                    </manifestEntries>
-                </archive>
-            </configuration>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <index>true</index>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Premain-Class>dynamicAnalysis.agent.LogMain</Premain-Class>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
 
-            <executions>
-                <execution>
-                    <id>make-assembly</id>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>single</goal>
-                    </goals>
-                </execution>
-            </executions>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
 
-        </plugin>
-    </plugins>
-  </build>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
@@ -73,19 +73,19 @@
             <version>28.2-jre</version>
         </dependency>
         <dependency>
-          <groupId>org.ow2.asm</groupId>
-          <artifactId>asm-tree</artifactId>
-          <version>7.2</version>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-tree</artifactId>
+            <version>7.2</version>
         </dependency>
         <dependency>
-          <groupId>org.ow2.asm</groupId>
-          <artifactId>asm-analysis</artifactId>
-          <version>7.2</version>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-analysis</artifactId>
+            <version>7.2</version>
         </dependency>
         <dependency>
-          <groupId>org.ow2.asm</groupId>
-          <artifactId>asm-util</artifactId>
-          <version>7.2</version>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-util</artifactId>
+            <version>7.2</version>
         </dependency>
         <dependency>
             <groupId>org.jgrapht</groupId>

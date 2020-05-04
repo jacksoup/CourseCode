@@ -7,4 +7,4 @@ java.util.logging.FileHandler.pattern = logged.log
 java.util.logging.FileHandler.formatter = java.util.logging.SimpleFormatter
 java.util.logging.FileHandler.level = ALL
 
-java.util.logging.SimpleFormatter.format='%1$tH:%1$tM:%1$tS, %4$s, %2$s, %5$s %n,'
+java.util.logging.SimpleFormatter.format=%2$s %5$s %n
